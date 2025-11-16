@@ -3,8 +3,8 @@ dotenv.config()
 
 import app from './app.js'
 import sequelize from './config/database.js'
-import './models/blog.js'
-import './models/user.js'
+import Blog from './models/blog.js'
+import User from './models/user.js'
 
 const PORT = process.env.PORT || 3001
 
@@ -13,7 +13,10 @@ const start = async () => {
         await sequelize.authenticate()
         console.log('Database connection OK')
 
-        await sequelize.sync()
+        User.hasMany(Blog)
+        Blog.belongsTo(User)
+
+        await sequelize.sync({ alter: true })
         console.log('Models synchronized')
 
         app.listen(PORT, () => {

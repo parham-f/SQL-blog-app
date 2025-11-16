@@ -1,5 +1,7 @@
 import express from 'express'
 import Blog from '../models/blog.js'
+import User from '../models/user.js'
+import tokenExtractor from '../utils/tokenExtractor.js'
 
 const router = express.Router()
 
@@ -21,9 +23,10 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', tokenExtractor, async (req, res, next) => {
     try {
-        const blog = await Blog.create(req.body)
+        const user = await User.findByPk(req.decodedToken.id)
+        const blog = await Blog.create({ ...req.body, userId: user.id, date: new Date() })
         res.status(201).json(blog)
     } catch (err) {
         next(err)
