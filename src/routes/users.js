@@ -1,10 +1,16 @@
 import express from 'express'
 import User from '../models/user.js'
+import Blog from '../models/blog.js'
 
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-    const users = await User.findAll()
+    const users = await User.findAll({
+        include: {
+            model: Blog,
+            attributes: { exclude: ['userId'] }
+        }
+    })
     res.json(users)
 })
 

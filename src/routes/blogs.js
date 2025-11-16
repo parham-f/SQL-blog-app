@@ -7,7 +7,13 @@ const router = express.Router()
 
 router.get('/', async (_req, res, next) => {
     try {
-        const blogs = await Blog.findAll()
+        const blogs = await Blog.findAll({
+            attributes: { exclude: ['userId'] },
+            include: {
+                model: User,
+                attributes: ['name']
+            }
+        })
         res.json(blogs)
     } catch (err) {
         next(err)
@@ -15,7 +21,13 @@ router.get('/', async (_req, res, next) => {
 })
 
 router.get('/:id', async (req, res) => {
-    const blog = await Blog.findByPk(req.params.id)
+    const blog = await Blog.findByPk(req.params.id, {
+        attributes: { exclude: ['userId'] },
+        include: {
+            model: User,
+            attributes: ['name']
+        }
+    })
     if (blog) {
         res.json(blog)
     } else {
