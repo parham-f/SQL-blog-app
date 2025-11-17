@@ -7,12 +7,24 @@ import { Op } from 'sequelize'
 const router = express.Router()
 
 router.get('/', async (req, res, next) => {
-    const where = {}
+    const where = []
     if (req.query.search) {
-        where.title = {
-            [Op.iLike]: `%${req.query.search}%`
-        }
+        where.push({
+            [Op.or]: [
+                {
+                    title: {
+                        [Op.iLike]: `%${req.query.search}%`
+                    }
+                },
+                {
+                    author: {
+                        [Op.iLike]: `%${req.query.search}%`
+                    }
+                }
+            ]
+        })
     }
+
     try {
         const blogs = await Blog.findAll({
             attributes: { exclude: ['userId'] },
