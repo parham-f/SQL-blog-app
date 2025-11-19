@@ -3,6 +3,7 @@ dotenv.config()
 
 import app from './app.js'
 import sequelize from './config/database.js'
+import { runMigrations } from './config/database.js'
 import Blog from './models/blog.js'
 import User from './models/user.js'
 
@@ -16,7 +17,7 @@ const start = async () => {
         User.hasMany(Blog)
         Blog.belongsTo(User)
 
-        await sequelize.sync({ alter: true })
+        await runMigrations()
         console.log('Models synchronized')
 
         app.listen(PORT, () => {
