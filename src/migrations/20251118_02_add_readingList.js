@@ -1,7 +1,7 @@
 import { DataTypes, Op } from 'sequelize'
 
 export async function up({ context: queryInterface }) {
-    await queryInterface.createTable('reading_list', {
+    await queryInterface.createTable('reading_lists', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -23,14 +23,14 @@ export async function up({ context: queryInterface }) {
                 key: 'id'
             }
         },
-        reading_state: {
-            type: DataTypes.ENUM('unread', 'read'),
+        read: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
-            defaultValue: 'unread'
+            defaultValue: false
         }
     })
 }
 
 export async function down({ context: queryInterface }) {
-    await queryInterface.dropTable('reading_list')
+    await queryInterface.dropTable('reading_lists')
 }

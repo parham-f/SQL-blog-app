@@ -26,17 +26,17 @@ ReadingList.init(
                 key: 'id'
             }
         },
-        readingState: {
-            type: DataTypes.ENUM('unread', 'read'),
+        read: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
-            defaultValue: 'unread'
+            defaultValue: false
         }
     },
     {
         sequelize,
         underscored: true,
-        modelName: 'reading_list',
-        timestamps: false
+        timestamps: false,
+        modelName: 'reading_list'
     }
 )
 
