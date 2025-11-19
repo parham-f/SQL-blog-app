@@ -6,6 +6,7 @@ import sequelize from './config/database.js'
 import { runMigrations } from './config/database.js'
 import Blog from './models/blog.js'
 import User from './models/user.js'
+import ReadingList from './models/readingList.js'
 
 const PORT = process.env.PORT || 3001
 
@@ -16,6 +17,9 @@ const start = async () => {
 
         User.hasMany(Blog)
         Blog.belongsTo(User)
+
+        User.belongsToMany(Blog, { through: ReadingList, as: 'readings' })
+        Blog.belongsToMany(User, { through: ReadingList, as: 'readers' })
 
         await runMigrations()
         console.log('Models synchronized')
