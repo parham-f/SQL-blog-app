@@ -12,9 +12,17 @@ app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/authors', authorsRouter)
 
-app.use((err, req, res, next) => {
-    console.error(err)
-    res.status(500).json({ error: 'Something went wrong' })
-})
+const errorHandler = (error, req, res, next) => {
+    if (error.name === 'SequelizeValidationError') {
+        return res.status(400).json({
+            error: error.errors.map(e => e.message),
+        })
+    }
+
+    console.error(error)
+    return res.status(500).json({ error: 'internal server error' })
+}
+
+app.use(errorHandler)
 
 export default app
