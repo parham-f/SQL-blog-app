@@ -4,6 +4,7 @@ import usersRouter from './routes/users.js'
 import loginRouter from './routes/login.js'
 import authorsRouter from './routes/authors.js'
 import readingListsRouter from './routes/readingLists.js'
+import logoutRouter from './routes/logout.js'
 
 const app = express()
 
@@ -11,6 +12,7 @@ app.use(express.json())
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/logout', logoutRouter)
 app.use('/api/authors', authorsRouter)
 app.use('/api/readingLists', readingListsRouter)
 
